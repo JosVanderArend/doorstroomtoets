@@ -1,6 +1,6 @@
 # Doorstroomtoets
 API-definities voor Logistieke proces rondom de Doorstroomtoets in het PO bij afsprakenset "Logistiek Proces Doorstroomtoets po"
-De OAS3-definities (Defs) in YAML-bestand "doorstroomtoets-openapi.yaml" zijn bedoeld voor de REST API t.b.v. Logisieke proces rondom de Doorstroomtoets PO voor schooljaar 2023-2024. 
+De OAS3-definities (Defs) in YAML-bestand "doorstroomtoets-openapi.yaml" zijn bedoeld voor de REST API t.b.v. Logisieke proces rondom de Doorstroomtoets PO versie 1.0 (voor schooljaar 2023-2024). 
 
 Deze uitwisseling omvat 3 interacties die schematisch worden gepresenteerd in de drie onderstaande sequencediagrammen.
 
@@ -38,7 +38,7 @@ sequenceDiagram
 ```
 
 Iedere publicatie van dit YAML-bestand voor de doorstroomtoetsketen is een getagde versie en is beschikbaar onder releases: https://github.com/JosVanderArend/doorstroomtoets/releases. Daar zijn tevens hulpmiddelen beschikbaar om getagde versies te vergelijken. 
-Er kan maximaal worden teruggekeken naar en vergeleken met de definitieve versie van het schooljaar 2020-2021 (hoewel deze versie door een aangepaste inrichting enigszins beperkt is).
+Er kan maximaal worden teruggekeken naar en vergeleken met de eerste versie 1.0 (voor schooljaar 2023-2024).
 
 Indien er problemen of verbetersuggesties zijn specifiek over de YAML dan graag indienen onder issues: https://github.com/JosVanderArend/doorstroomtoets/issues.
 
