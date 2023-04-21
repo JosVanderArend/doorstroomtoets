@@ -1,4 +1,4 @@
-# doorstroomtoets
+# Doorstroomtoets
 API-definities voor Logistieke proces rondom de Doorstroomtoets in het PO bij afsprakenset "Logistiek Proces Doorstroomtoets po"
 De OAS3-definities (Defs) in YAML-bestand "doorstroomtoets-openapi.yaml" zijn bedoeld voor de REST API t.b.v. Logisieke proces rondom de Doorstroomtoets PO voor schooljaar 2023-2024. 
 
