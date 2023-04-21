@@ -472,9 +472,9 @@ components:
         versie:
           type: string
           description: De versie van de afspraak volgens welke de Deelnemerslijst is opgemaakt; waarde is voor de huidige specs altijd "Doorstroomtoetsketen_v1".
-          example: Doorstroomtoetsketen_v3
+          example: Doorstroomtoetsketen_v1
           enum:
-          - Doorstroomtoetsketen_v3
+          - Doorstroomtoetsketen_v1
         profiel:
           type: string
           description: Het profiel volgens welke de Deelnemerslijst is opgemaakt; waarde is altijd "Toetsdeelnemers".
@@ -537,24 +537,8 @@ components:
           example: Route-8 digitaal zonder functioneren
         versie:
           type: string
-          description: |
-            Versie-aanduiding van de doorstroomtoets. De versie van de doorstroomtoets:
-              * "01" - CET papier zonder wereldoriëntatie (niet meer in gebruik)
-              * "02" - CET papier met wereldoriëntatie (niet meer in gebruik)
-              * "03" - CET digitaal zonder wereldoriëntatie (niet meer in gebruik)
-              * "04" - CET digitaal zonder wereldoriëntatie (niet meer in gebruik)
-              * "11" - Route-8 digitaal zonder functioneren
-              * "12" - Route-8 digitaal met functioneren
-              * "21" - IEP papier
-              * "31" - Dia-doorstroomtoets digitaal
-              * "51" - AMN Doorstroomtoets digitaal
-          example: "01"
-          enum:
-          - "11"
-          - "12"
-          - "21"
-          - "31"
-          - "51"
+          description: Versie-aanduiding van de doorstroomtoets. 
+          example: "Doorstroomtoets op papier"
         url:
           type: string
           description: URL naar verdere informatie over de doorstroomtoets.
