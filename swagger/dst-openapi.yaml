@@ -63,9 +63,9 @@
                 "$ref" : "#/components/schemas/Deelnemerslijst"
               },
               "examples" : {
-                "enkelvoudig" : {
+                "Lijst met 1 deelnemer" : {
                   "value" : {
-                    "datumtijd" : "2023-05-08T11:44:00Z",
+                    "datumtijd" : "2023-05-10T11:44:00Z",
                     "auteur" : "Applicatie xyz",
                     "versie" : "Doorstroomtoetsketen_v1",
                     "profiel" : "Toetsdeelnemers",
@@ -109,9 +109,9 @@
                     } ]
                   }
                 },
-                "meervoudig" : {
+                "Lijst met meer deelnemers" : {
                   "value" : {
-                    "datumtijd" : "2023-05-08T11:44:00Z",
+                    "datumtijd" : "2023-05-10T11:44:00Z",
                     "auteur" : "Applicatie xyz",
                     "versie" : "Doorstroomtoetsketen_v1",
                     "profiel" : "Toetsdeelnemers",
@@ -271,6 +271,92 @@
             "application/json" : {
               "schema" : {
                 "$ref" : "#/components/schemas/Leerlingresultaat"
+              },
+              "examples" : {
+                "Leerlingresultaat" : {
+                  "value" : {
+                    "datumtijd" : "2023-05-10T11:44:00Z",
+                    "auteur" : "Toetssysteem xyz",
+                    "versie" : "Doorstroomtoetsketen_v1",
+                    "profiel" : "Leerlingtoetsresultaat",
+                    "schooljaar" : "2023-2024",
+                    "resultatenscores" : {
+                      "id" : "resultatenscores-abc123",
+                      "deelnemerref" : [ {
+                        "label" : "ECK-iD",
+                        "onderwijsdeelnemerID" : "leerling-abc123"
+                      } ],
+                      "versie" : "Definitief",
+                      "datumtijd" : "2023-05-05T11:44:00Z",
+                      "toetsdefinitie" : "ICE",
+                      "afnamecontext" : {
+                        "afname" : {
+                          "id" : "Jaargroep",
+                          "afnametijdstip" : "2023-04-28T11:44:00Z"
+                        }
+                      }
+                    },
+                    "scores" : {
+                      "id" : "scores-abc123",
+                      "scores" : [ {
+                        "label" : "Aantal opgaven",
+                        "id" : "score-abc123",
+                        "toetseenheid" : "ICE",
+                        "waarde" : 50
+                      }, {
+                        "label" : "Toetsscore",
+                        "id" : "score-def456",
+                        "toetseenheid" : "ICE",
+                        "waarde" : 100
+                      } ]
+                    },
+                    "resultaten" : {
+                      "aanvullendeinfo" : "toetsleverancier-endpoint/dst/leerlingrapport/{rapportid}",
+                      "resultaten" : [ {
+                        "label" : "Toetsadvies",
+                        "toetseenheid" : "ICE",
+                        "waarde" : "vwo"
+                      }, {
+                        "label" : "Referentieniveau",
+                        "toetseenheid" : "REKENEN",
+                        "waarde" : "1S"
+                      }, {
+                        "label" : "Referentieniveau",
+                        "toetseenheid" : "LEZEN",
+                        "waarde" : "1F"
+                      }, {
+                        "label" : "Referentieniveau",
+                        "toetseenheid" : "TAALVERZORGING",
+                        "waarde" : "L1F"
+                      } ]
+                    },
+                    "toets" : {
+                      "label" : "Doorstroomtoets",
+                      "id" : "ICE",
+                      "naam" : "IEP Doorstroomtoets",
+                      "versie" : "IEP papier",
+                      "url" : "https://iepdoorstroomtoets.nl",
+                      "omschrijving" : "blabla",
+                      "toetsonderdelen" : [ {
+                        "label" : "Onderdeel",
+                        "id" : "REKENEN",
+                        "omschrijving" : "Rekenen"
+                      }, {
+                        "label" : "Onderdeel",
+                        "id" : "NEDERLANDSE_TAAL",
+                        "toetsonderdelen" : [ {
+                          "label" : "Domein",
+                          "id" : "LEZEN",
+                          "omschrijving" : "Lezen"
+                        }, {
+                          "label" : "Domein",
+                          "id" : "TAALVERZORGING",
+                          "omschrijving" : "Taalverzorging"
+                        } ]
+                      } ]
+                    }
+                  }
+                }
               }
             }
           },
