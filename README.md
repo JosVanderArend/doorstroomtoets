@@ -44,6 +44,5 @@ Er kan maximaal worden teruggekeken naar en vergeleken met de eerste versie 1.0 
 Indien er problemen of verbetersuggesties zijn specifiek over de YAML dan graag indienen onder issues: https://github.com/JosVanderArend/doorstroomtoets/issues.
 
 
-De actuele versie van deze OAS3-definities kan met de Swagger Editor worden ingezien via deze link: https://editor.swagger.io/?url=https://raw.githubusercontent.com/JosVanderArend/doorstroomtoets/main/doorstroomtoets-openapi.yaml. 
+De actuele versie van deze OAS3-definities kan met de Swagger Editor worden ingezien via deze link: https://github.com/JosVanderArend/doorstroomtoets/blob/main/swagger/doorstroom-openapi.yaml. 
  
-
