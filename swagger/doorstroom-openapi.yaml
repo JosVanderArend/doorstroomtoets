@@ -2,7 +2,7 @@
   "openapi" : "3.0.1",
   "info" : {
     "title" : "Doorstroomtoetsketen",
-    "description" : "Dit is de OAS3-definitie versie 1.0 van de Doorstroomtoetsketen voor schooljaar 2023-2024. \n\nDeze versie is gebaseerd op eerdere definitie van de eindtoetsketen, en aangepast zoals besloten tijdens het ketenoverleg van 16 maart en 19 april 2023, dus inclusief: \n+ Overgang van standlevering naar mutatielevering voor Deelnemerslijst, \n+ Aanpassing meldingstekst bij foutcode 401 en \n+ Aanpassing waardenlijsten aan ROD-po en \n+ In OSR nu wel beheer van mandaten van toetssystemen, niet van endpoints van toetssystemen.\n+ Enkele correcties en aanvullingen om de specs en de defs beter te laten aansluiten.\n\nBij de implementatie met behulp van deze OAS3-definities zijn de volgende aanpassingen t.o.v. voorgaande eindtoets-versie belangrijk:\n- Extra voorbeeldberichten toegevoegd bij POST /registreren en POST /leerlingrresultaat,\n- Aanpassing meldingstekst bij foutcode 401 bij POST /registreren en POST /leerlingrresultaat,\n- Waarden van eigenschap versie en profiel binnen heen- en terugbericht gewijzigd,\n- Eigenschap versie binnen Toets is nu een optioneel vrij tekstveld (was verplicht met enumeratie),\n- Enumeraties zijn geactualiseerd en waarden uit koppeling ROD-po zijn overeenkomstig aangepast.\n\nVerder zijn de schemacomponenten alfabetisch gesorteerd en zijn de attributen van schemacomponenten aangevuld met eigenschap 'title' met als waarde de naam van dit gegeven uit de specs. ",
+    "description" : "Dit is de OAS3-definitie versie 1.0 van de Doorstroomtoetsketen voor schooljaar 2023-2024. \n\nDeze versie is gebaseerd op eerdere definitie van de eindtoetsketen, en aangepast zoals besloten tijdens het ketenoverleg van 16 maart en 19 april 2023, dus inclusief: \n+ Overgang van standlevering naar mutatielevering voor Deelnemerslijst, \n+ Aanpassing meldingstekst bij foutcode 401 en \n+ Aanpassing waardenlijsten aan ROD-po en \n+ In OSR nu wel beheer van mandaten van toetssystemen, niet van endpoints van toetssystemen.\n+ Enkele correcties en aanvullingen n.a.v. reviewcommentaar en om de specs en de defs beter te laten aansluiten.\n\nBij de implementatie met behulp van deze OAS3-definities zijn de volgende aanpassingen in deze defs t.o.v. voorgaande eindtoets-versie belangrijk:\n- Aanpassing meldingstekst bij foutcode 401 bij POST /registreren en POST /leerlingrresultaat,\n- Eigenschappen versie en profiel binnen heen- en terugbericht hebben gewijzigde verplichte waarde,\n- Alle eigenschappen binnen Deelnemersgroep zijn nu verplicht,\n- Gegevensobject Eindtoets heet nu Doorstroomtoets,\n- Eigenschap versie binnen Doorstroomtoets is nu een optioneel vrij tekstveld (was verplicht met enumeratie),\n- Enumeraties zijn geactualiseerd en waarden uit koppeling ROD-po zijn overeenkomstig aangepast.\n- Voorbeelden bijgewerkt en voorbeldberichten toegevoegd bij POST /registreren en POST /leerlingrresultaat,\n\nVerder zijn de schemacomponenten nu alfabetisch gesorteerd en zijn schemacomponenten aangepast volgens de geautomatiseerde API-generatie uit de modellen (zoals waardenlijsten zijn nu aparte componenten) en aangevuld overeenkomstig de specs (zoals eigenschap 'title' met de naam van dit gegeven in de specs). ",
     "contact" : {
       "name" : "Jos van der Arend (Kennisnet)",
       "url" : "https://app.swaggerhub.com/apis-docs/Kennisnet/Doorstroomtoets/1.0",
@@ -291,7 +291,7 @@
                       "toetsdefinitie" : "ICE",
                       "afnamecontext" : {
                         "afname" : {
-                          "id" : "Jaargroep",
+                          "id" : "afname-abc123",
                           "afnametijdstip" : "2023-04-28T11:44:00Z"
                         }
                       }
@@ -299,22 +299,19 @@
                     "scores" : {
                       "id" : "scores-abc123",
                       "scores" : [ {
-                        "label" : "Aantal opgaven",
-                        "id" : "score-abc123",
-                        "toetseenheid" : "ICE",
-                        "waarde" : 50
-                      }, {
                         "label" : "Toetsscore",
                         "id" : "score-def456",
-                        "toetseenheid" : "ICE",
                         "waarde" : 100
+                      }, {
+                        "label" : "Aantal opgaven",
+                        "id" : "score-abc123",
+                        "waarde" : 50
                       } ]
                     },
                     "resultaten" : {
                       "aanvullendeinfo" : "toetsleverancier-endpoint/dst/leerlingrapport/{rapportid}",
                       "resultaten" : [ {
                         "label" : "Toetsadvies",
-                        "toetseenheid" : "ICE",
                         "waarde" : "vwo"
                       }, {
                         "label" : "Referentieniveau",
@@ -524,7 +521,7 @@
         "type" : "object",
         "properties" : {
           "label" : {
-            "$ref" : "#/components/schemas/LeerlingIdType"
+            "$ref" : "#/components/schemas/LeerlingIdsoort_enum"
           },
           "onderwijsdeelnemerID" : {
             "title" : "OnderwijsdeelnemerID",
@@ -662,7 +659,7 @@
             "format" : "date"
           },
           "geslacht" : {
-            "$ref" : "#/components/schemas/Geslachttype"
+            "$ref" : "#/components/schemas/Geslachttype_enum"
           }
         },
         "description" : "Demografische gegevens van de onderwijsdeelnemer."
@@ -702,7 +699,7 @@
       },
       "Domeincode_enum" : {
         "type" : "string",
-        "description" : "Waardelijst voor identificatie van domein van doorstroomtoets.<body><ul><li>`LEZEN` - Nederlandse taal - Lezen </li><li>`TAALVERZORGING` - Nederlandse taal - Taalverzorging </li><li>`8052` - Nederlandse taal - Woordenschat </li><li>`8053` - Nederlandse taal - Schrijven </li><li>`8054` - Nederlandse taal - Begrippenlijst </li><li>`8055` - Nederlandse taal - Luistervaardigheid </li><li>`8060` - Rekenen - Getallen </li><li>`8061` - Rekenen - Verhoudingen </li><li>`8062` - Rekenen - Meten en meetkunde </li><li>`8063` - Rekenen - Verbanden </li><li>`8064` - Rekenen - Begrip </li><li>`8065` - Rekenen - Bewerkingen </li><li>`8080` - Zelfconcept </li><li>`8081` - Werkhouding </li></ul></body>",
+        "description" : "Waardelijst voor typering van domein van doorstroomtoets.<body><ul><li>`LEZEN` - Nederlandse taal - Lezen </li><li>`TAALVERZORGING` - Nederlandse taal - Taalverzorging </li><li>`8052` - Nederlandse taal - Woordenschat </li><li>`8053` - Nederlandse taal - Schrijven </li><li>`8054` - Nederlandse taal - Begrippenlijst </li><li>`8055` - Nederlandse taal - Luistervaardigheid </li><li>`8060` - Rekenen - Getallen </li><li>`8061` - Rekenen - Verhoudingen </li><li>`8062` - Rekenen - Meten en meetkunde </li><li>`8063` - Rekenen - Verbanden </li><li>`8064` - Rekenen - Begrip </li><li>`8065` - Rekenen - Bewerkingen </li><li>`8080` - Zelfconcept </li><li>`8081` - Werkhouding </li></ul></body>",
         "example" : "LEZEN",
         "enum" : [ "LEZEN", "TAALVERZORGING", "8052", "8053", "8054", "8055", "8060", "8061", "8062", "8063", "8064", "8065", "8080", "8081" ]
       },
@@ -759,9 +756,10 @@
         },
         "description" : "Gegevens over de doorstroomtoets, inclusief onderdelen, domeinen en subdomeinen waarop de scores en resultaten betrekking hebben. De doorstroomtoets wordt sinds 2024 verplicht afgenomen aan het einde van de PO, als opvolger van de eindtoets."
       },
-      "Geslachttype" : {
+      "Geslachttype_enum" : {
         "type" : "integer",
         "description" : "Waardelijst voor typering van het geslacht van de leerling.<body><ul><li>`1` - Man </li><li>`2` - Vrouw </li><li>`9` - Niet gespecificeerd </li></ul></body>",
+        "example" : 2,
         "enum" : [ 1, 2, 9 ]
       },
       "Groep" : {
@@ -797,6 +795,12 @@
         },
         "description" : "Verzameling van onderwijsdeelnemers."
       },
+      "GroepJaargroeptype_enum" : {
+        "type" : "string",
+        "description" : "Waardelijst voor typering van het niveau (jaargroep) van de groep.<body><ul><li>`7` - PO groep 7 </li><li>`8` - PO groep 8 </li><li>`C` - Combinatie </li><li>`S` - SO / SBO </li></ul></body>",
+        "example" : "8",
+        "enum" : [ "7", "8", "C", "S" ]
+      },
       "Groepsniveau" : {
         "required" : [ "label", "niveau" ],
         "type" : "object",
@@ -809,18 +813,21 @@
             "enum" : [ "Jaargroep" ]
           },
           "niveau" : {
-            "title" : "Niveau",
-            "type" : "string",
-            "description" : "Een stamgroep is in principe gekoppeld aan één niveau, maar de groep kan eventueel ook een combinatiegroep cq heterogene groep zijn. Bij een homogene stamgroep wordt het niveau onder andere gebruikt bij referentienormering van de toetsresultaten. Het jaargroep-niveau van de groep:\n  * \"7\" - Groep met Jaargroep 7 en/of Leerjaar 7 leerlingen\n  * \"8\" - Groep met Jaargroep 8 en/of Leerjaar 8 leerlingen\n  * \"C\" - Combinatiegroep\n  * \"S\" - SO\n",
-            "example" : "8",
-            "enum" : [ "7", "8", "C", "S" ]
+            "$ref" : "#/components/schemas/GroepJaargroeptype_enum"
           }
         }
       },
-      "LeerlingIdType" : {
+      "LeerlingIdsoort_enum" : {
         "type" : "string",
-        "description" : "Waardelijst voor typering van het soort identiteit van de leerling:\n  * ECK-iD - Het ECK-iD id de ID van de leerling in de leermiddelenketen en per definitie persistent over meerdere uitwisselingen heen. Het ECK-iD is een versleutelde versie van het persoonsgebonden nummer (PGN) en daarmee uniek en sterk beveiligd. Gebruik van het ECK-iD is wettelijk bedoeld voor de Educatieve ContentKeten (zie: https://www.eck-id.nl/).\n  * LAS-key - De LAS-key is de betekenisloze identifier van de leerling (onderwijsdeelnemer), minimaal uniek binnen de scope van deze ketensamenwerking. LAS zorgt voor uniciteit binnen de gegevensuitwisselingen m.b.t. deze keten. Deze identifier wordt daarom ook wel LAS-key genoemd. De LAS-key is maximaal 256 karakters.\n",
+        "description" : "Waardelijst voor typering van het soort identiteit van de leerling.<body><ul><li>`ECK-iD` - Het ECK-iD id de ID van de leerling in de leermiddelenketen en per definitie persistent over meerdere uitwisselingen heen. Het ECK-iD is een versleutelde versie van het persoonsgebonden nummer (PGN) en daarmee uniek en sterk beveiligd. Gebruik van het ECK-iD is wettelijk bedoeld voor de Educatieve ContentKeten (zie: https://www.eck-id.nl/). </li><li>`LAS-key` - De LAS-key is de betekenisloze identifier van de leerling (onderwijsdeelnemer), minimaal uniek binnen de scope van deze ketensamenwerking. LAS zorgt voor uniciteit binnen de gegevensuitwisselingen m.b.t. deze keten. Deze identifier wordt daarom ook wel LAS-key genoemd. De LAS-key is maximaal 256 karakters. </li></ul></body>",
+        "example" : "ECK-iD",
         "enum" : [ "ECK-iD", "LAS-key" ]
+      },
+      "LeerlingJaargroeptype_enum" : {
+        "type" : "string",
+        "description" : "Waardelijst voor typering van het niveau (jaargroep) van de leerling.<body><ul><li>`7` - PO groep 7 </li><li>`8` - PO groep 8 </li></ul></body>",
+        "example" : "8",
+        "enum" : [ "7", "8" ]
       },
       "LeerlingResultatenScores" : {
         "required" : [ "afnamecontext", "deelnemerref", "id", "resultaten", "toetsdefinitie", "versie" ],
@@ -857,7 +864,7 @@
             "title" : "Toetsdefinitie",
             "type" : "string",
             "description" : "Verwijzing naar de toetsdefinitie waarop de scores en resultaten betrekking hebben. Waarde hier altijd verwijzing naar de doorstroomtoets. Let op, gegeven \"Code toets\" van Verplichte Doorstroomtoets is verplicht.",
-            "example" : "0012"
+            "example" : "ROUTE_8"
           },
           "afnamecontext" : {
             "$ref" : "#/components/schemas/Afnamecontext"
@@ -883,11 +890,7 @@
             "enum" : [ "Jaargroep" ]
           },
           "niveau" : {
-            "title" : "Niveau",
-            "type" : "string",
-            "description" : "Het onderwijsniveau (jaargroep/niveau/leerjaar) van de leerling. Het jaargroep-niveau van de leerling:\n  * 7 - PO Jaargroep 7 en/of Leerjaar 7 van de leerling\n  * 8 - PO Jaargroep 8 en/of Leerjaar 8 of hoger van de leerling (in SO)\n",
-            "example" : "8",
-            "enum" : [ "7", "8" ]
+            "$ref" : "#/components/schemas/LeerlingJaargroeptype_enum"
           }
         }
       },
@@ -921,7 +924,8 @@
             "minLength" : 1,
             "type" : "string",
             "description" : "Het profiel volgens welke de gegevens opgemaakt; waarde is altijd \"Leerlingtoetsresultaat\".",
-            "example" : "Leerlingtoetsresultaat"
+            "example" : "Leerlingtoetsresultaat",
+            "enum" : [ "Leerlingtoetsresultaat" ]
           },
           "schooljaar" : {
             "title" : "Schooljaar",
@@ -951,11 +955,7 @@
             "enum" : [ "Onderdeel" ]
           },
           "id" : {
-            "title" : "Id",
-            "type" : "string",
-            "description" : "Identifier van het onderdeel van de doorstroomtoets. Deze identifier wordt middels verwijzing gebruikt bij de scores en resultaten. Het soort onderdeel:\n  * \"NEDERLANDSE_TAAL\" - Nederlandse taal\n  * \"REKENEN\" - Rekenen\n  * \"8002\" - Wereldoriëntatie\n  * \"8003\" - Functioneren\n",
-            "example" : "8000",
-            "enum" : [ "NEDERLANDSE_TAAL", "REKENEN", "8002", "8003" ]
+            "$ref" : "#/components/schemas/Onderdeelcode_enum"
           },
           "omschrijving" : {
             "title" : "Omschrijving",
@@ -973,6 +973,12 @@
             }
           }
         }
+      },
+      "Onderdeelcode_enum" : {
+        "type" : "string",
+        "description" : "Waardelijst voor typering van onderdeel van doorstroomtoets.<body><ul><li>`NEDERLANDSE_TAAL` - Nederlandse taal </li><li>`REKENEN` - Rekenen </li><li>`8002` - Wereldoriëntatie </li><li>`8003` - Functioneren </li></ul></body>",
+        "example" : "NEDERLANDSE_TAAL",
+        "enum" : [ "NEDERLANDSE_TAAL", "REKENEN", "8002", "8003" ]
       },
       "Onderwijsdeelnemer" : {
         "required" : [ "achternaam", "deelnemerref", "extensie", "groep", "label", "niveau", "roepnaam" ],
@@ -1033,17 +1039,13 @@
         "type" : "object",
         "properties" : {
           "label" : {
-            "title" : "Typelabel",
-            "type" : "string",
-            "description" : "Typering van dit resultaat. Het type Resultaat:\n  * Referentieniveau - Resultaat is het referentieniveau voor Rekenen en Taal (Lezen en Taalverzorging). \n  * Toetsadvies - Resultaat is het Toetsadvies op basis van de Toetsscore.\n  * Percentielscore - Resultaat is de percentielscore van een specifieke toetseenheid.\n",
-            "example" : "Toetsadvies",
-            "enum" : [ "Referentieniveau", "Toetsadvies", "Percentielscore" ]
+            "$ref" : "#/components/schemas/Resultaatsoort_enum"
           },
           "toetseenheid" : {
             "title" : "Toetseenheid",
             "type" : "string",
             "description" : "Verwijzing naar het toetsonderdeel binnen de doorstroomtoets (Onderdeel, Domein of Subdomein) waarop het resultaat betrekking heeft. De waarde is de id van het betreffende toetsonderdeel. Indien het een resultaat voor de gehele doorstroomtoets betreft dan ontbreekt dit veld!.",
-            "example" : "0012"
+            "example" : "DIA"
           },
           "waarde" : {
             "title" : "Waarde",
@@ -1053,6 +1055,12 @@
           }
         },
         "description" : "Gegevens van de resultaten van een leerling."
+      },
+      "Resultaatsoort_enum" : {
+        "type" : "string",
+        "description" : "Waardelijst voor typering van resultaat.<body><ul><li>`Referentieniveau` - Resultaat is het referentieniveau voor Rekenen en Taal (Lezen en Taalverzorging). </li><li>`Toetsadvies` -  Resultaat is het Toetsadvies op basis van de Toetsscore. </li><li>`Percentielscore` - Resultaat is de percentielscore van een specifieke toetseenheid. </li></ul></body>",
+        "example" : "Toetsadvies",
+        "enum" : [ "Referentieniveau", "Toetsadvies", "Percentielscore" ]
       },
       "Resultaten" : {
         "required" : [ "resultaten" ],
@@ -1078,11 +1086,7 @@
         "type" : "object",
         "properties" : {
           "label" : {
-            "title" : "Typelabel",
-            "type" : "string",
-            "description" : "Typering van deze score:\n  * Aantal opgaven - Het aantal gemaakte opgaven\n  * Aantal goed - Het aantal goed gemaakte opgaven\n  * Detailscore - Score van aantal behaalde punten op specifiek toetseenheid (Onderdeel, Domein of Subdomein) van de Doorstroomtoets PO.\n  * Toetsscore - Score van het totaal aantal behaalde punten op de Doorstroomtoets PO.\n",
-            "example" : "Aantal opgaven",
-            "enum" : [ "Aantal opgaven", "Aantal goed", "Detailscore", "Toetsscore" ]
+            "$ref" : "#/components/schemas/Scoresoort_enum"
           },
           "id" : {
             "title" : "Id",
@@ -1094,7 +1098,7 @@
             "title" : "Toetseenheid",
             "type" : "string",
             "description" : "Verwijzing naar het toetsonderdeel binnen de doorstroomtoets (Onderdeel, Domein of Subdomein) waarop de score betrekking heeft. De waarde is de id van het betreffende toetsonderdeel. Indien het een score voor de gehele doorstroomtoets betreft dan ontbreekt dit veld.",
-            "example" : "0012"
+            "example" : "AMN"
           },
           "waarde" : {
             "title" : "Waarde",
@@ -1123,6 +1127,12 @@
           }
         }
       },
+      "Scoresoort_enum" : {
+        "type" : "string",
+        "description" : "Waardelijst voor typering van de score.<body><ul><li>`Aantal opgaven` - Het aantal gemaakte opgaven. </li><li>`Aantal goed` -  Het aantal goed gemaakte opgaven. </li><li>`Detailscore` - Score van aantal behaalde punten op specifiek toetseenheid (Onderdeel, Domein of Subdomein) van de Doorstroomtoets PO. </li><li>`Toetsscore` - Score van het totaal aantal behaalde punten op de Doorstroomtoets PO. </li></ul></body>",
+        "example" : "Aantal opgaven",
+        "enum" : [ "Aantal opgaven", "Aantal goed", "Detailscore", "Toetsscore" ]
+      },
       "Subdomein" : {
         "required" : [ "id", "label" ],
         "type" : "object",
@@ -1135,11 +1145,7 @@
             "enum" : [ "Subdomein" ]
           },
           "id" : {
-            "title" : "Id",
-            "type" : "string",
-            "description" : "Identifier van het subdomein van de doorstroomtoets. Deze identifier wordt middels verwijzing gebruikt bij de scores en resultaten. Het soort subdomein:\n  * \"9000\" - Taalverzorging - Spelling werkwoorden\n  * \"9001\" - Taalverzorging - Spelling niet-werkwoorden\n  * \"9003\" - Taalverzorging - Interpunctie\n  * \"9010\" - Lezen - Begrijpend lezen\n  * \"9011\" - Lezen - Opzoeken\n  * \"9012\" - Lezen - Samenvatten\n  * \"9013\" - Lezen - Techniek en woordenschat\n  * \"9014\" - Lezen - Interpreteren, evalueren en samenvatten\n",
-            "example" : "9010",
-            "enum" : [ "9000", "9001", "9003", "9010", "9011", "9012", "9013", "9014" ]
+            "$ref" : "#/components/schemas/Subdomeincode_enum"
           },
           "omschrijving" : {
             "title" : "Omschrijving",
@@ -1148,6 +1154,12 @@
             "example" : "Lezen - Begrijpend lezen"
           }
         }
+      },
+      "Subdomeincode_enum" : {
+        "type" : "string",
+        "description" : "Waardelijst voor typering van subdomein van doorstroomtoets.<body><ul><li>`9000` - Taalverzorging - Spelling werkwoorden </li><li>`9001` - Taalverzorging - Spelling niet-werkwoorden </li><li>`9003` - Taalverzorging - Interpunctie </li><li>`9010` - Lezen - Begrijpend lezen </li><li>`9011` - Lezen - Opzoeken </li><li>`9012` - Lezen - Samenvatten </li><li>`9013` - Lezen - Techniek en woordenschat </li><li>`9014` - Lezen - Interpreteren, evalueren en samenvatten </li></ul></body>",
+        "example" : "9010",
+        "enum" : [ "9000", "9001", "9003", "9010", "9011", "9012", "9013", "9014" ]
       },
       "Toetssoort_enum" : {
         "type" : "string",
@@ -1160,7 +1172,7 @@
         "properties" : {
           "melding" : {
             "type" : "string",
-            "example" : "Tekstuele toelichting waarom het verzoek wel of niet geslaagd is. Deze toelichting zou moeten corresponderen met de meldingstekst uit de specs bij de betreffende statuscode."
+            "description" : "Tekstuele toelichting waarom het verzoek wel of niet geslaagd is. Deze toelichting zou moeten corresponderen met de meldingstekst uit de specs bij de betreffende statuscode."
           }
         }
       }
