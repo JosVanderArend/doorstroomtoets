@@ -1,0 +1,1043 @@
+---
+openapi: 3.0.1
+info:
+  title: Doorstroomtoetsketen
+  description: "Dit is de OAS3-definitie versie 1.0 van de Doorstroomtoetsketen voor schooljaar 2023-2024 in het po. \n\nDeze versie is gebaseerd op eerdere definitie van de eindtoetsketen, en aangepast zoals besloten tijdens het ketenoverleg van 16 maart en 19 april 2023, dus inclusief: \n+ Overgang van standlevering naar mutatielevering voor Deelnemerslijst, \n+ Aanpassing meldingstekst bij foutcode 401, \n+ Aanpassing waardenlijsten aan ROD-po, \n+ In OSR nu wel beheer van mandaten van toetssystemen, niet van endpoints van toetssystemen,\n+ Enkele correcties en aanvullingen n.a.v. reviewcommentaar en om de specs en de defs beter te laten aansluiten.\n\nBij de implementatie met behulp van deze OAS3-definities zijn de volgende aanpassingen in deze defs t.o.v. voorgaande eindtoets-versie belangrijk:\n- Aanpassing meldingstekst bij foutcode 401 bij POST /registreren en POST /leerlingresultaat,\n- Eigenschappen versie en profiel binnen heen- en terugbericht hebben gewijzigde verplichte waarde,\n- Alle eigenschappen binnen Deelnemersgroep zijn nu verplicht,\n- Gegevensobject Eindtoets heet nu Doorstroomtoets,\n- Eigenschap versie binnen Doorstroomtoets is nu een optioneel vrij tekstveld (was verplicht met enumeratie),\n- Enumeraties zijn geactualiseerd en waarden uit koppeling ROD-po zijn overeenkomstig aangepast,\n- Voorbeelden zijn bijgewerkt en voorbeeldberichten zijn toegevoegd bij POST /registreren en POST /leerlingresultaat.\n\nVerder zijn de schemacomponenten nu alfabetisch gesorteerd en zijn schemacomponenten aangepast volgens de geautomatiseerde API-generatie uit de modellen (zoals waardenlijsten zijn nu aparte componenten) en aangevuld overeenkomstig de specs (zoals eigenschap 'title' met de naam van dit gegeven in de specs).\nIn de laaste update van 16 mei 2023 zijn de waarden van versie binnen heenbericht en terugbericht in overeenstemming met Specs gecorrigeerd. "
+  contact:
+    name: Jos van der Arend (Kennisnet)
+    url: https://app.swaggerhub.com/apis-docs/Kennisnet/Doorstroomtoets/1.0
+    email: J.vanderArend@kennisnet.nl
+  version: "1.0"
+servers:
+- url: https://virtserver.swaggerhub.com/Kennisnet/Doorstroomtoets/1.0
+  description: SwaggerHub API Auto Mocking
+- url: https://doorstroomtoets.edustandaard.nl/v1.0
+tags:
+- name: Toetsdeelnemers
+  description: API-definities voor de uitwisseling van de doorstroomtoetsdeelnemers
+- name: Toetsresultaten
+  description: API-definities voor de uitwisseling van de doorstroomtoetsresultaten
+paths:
+  /registreren:
+    post:
+      tags:
+      - Toetsdeelnemers
+      summary: Registreren doorstroomtoetsdeelnemers
+      description: Registreren van de lijst met deelnemers aan de doorstroomtoets volgens mutatielevering aan de toetsleverancier. Iedere aanlevering van het mutatiebericht met de deelnemerslijst is een aanvulling van nieuwe deelnemers en/of wijziging van bestaande deelnemers op de verzameling van eerder verstuurde deelnemergegevens. Middels dit mutatiebericht kunnen geen deelnemers worden verwijderd.
+      operationId: postregistreren
+      parameters:
+      - name: edu-to
+        in: query
+        description: "Dit geeft aan namens welke school de toetsleverancier het bericht ontvangt. De waarde is het School OIN (omdat het routeringskenmerk voor de toetsleverancier in het OSR vooralsnog niet bestaat). Deze parameter is verplicht volgens de Edukoppeling REST/SaaS-profiel. De waarde is code van 20 karakters, met alleen cijfers en letters."
+        required: true
+        style: form
+        explode: false
+        schema:
+          pattern: "(\\d|\\D){20}"
+          type: string
+        example: 0000000700011BB00000
+      - name: edu-from
+        in: query
+        description: "Dit geeft aan namens welke school de LAS-leverancier het bericht verzendt. De waarde is het routeringskenmerk van de betreffende schooladministratie. Deze parameter is verplicht volgens de Edukoppeling REST/SaaS-profiel. Let op, de waarde van deze parameter wordt door de ontvangende toetsleverancier opgeslagen om te worden gebruikt bij de aanlevering van de doorstroomtoetsresultaten. De waarde is code van 20 karakters, met alleen cijfers en letters."
+        required: true
+        style: form
+        explode: false
+        schema:
+          pattern: "(\\d|\\D){20}"
+          type: string
+        example: 0000000700011BB00530
+      requestBody:
+        description: Deelnemerslijst
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Deelnemerslijst'
+            examples:
+              Lijst met 1 deelnemer:
+                value:
+                  datumtijd: 2023-05-10T11:44:00Z
+                  auteur: Applicatie xyz
+                  versie: Doorstroomtoetsketen_v1
+                  profiel: Toetsdeelnemers
+                  schooljaar: 2023-2024
+                  deelnemersgroep:
+                    instellingscode: 99XX
+                    vestigingscode: "00"
+                    onderwijsaanbiedercode: 123A123
+                    onderwijslocatiecode: 123X123
+                    administratienr: "99"
+                  groepen:
+                  - label: Stamgroep
+                    id: groep-abc123
+                    omschrijving: 8A
+                    niveau:
+                      label: Jaargroep
+                      niveau: "8"
+                  deelnemers:
+                  - label: Leerling
+                    deelnemerref:
+                    - label: ECK-iD
+                      onderwijsdeelnemerID: leerling-abc123
+                    achternaam: Achternaam
+                    voorvoegsel: van der
+                    roepnaam: Aatje
+                    groep: groep-abc123
+                    niveau:
+                      label: Jaargroep
+                      niveau: "8"
+                    extensie:
+                      label: Demografisch
+                      voorletters: ABC
+                      geboortedatum: 2011-07-12
+                      geslacht: 1
+              Lijst met meer deelnemers:
+                value:
+                  datumtijd: 2023-05-10T11:44:00Z
+                  auteur: Applicatie xyz
+                  versie: Doorstroomtoetsketen_v1
+                  profiel: Toetsdeelnemers
+                  schooljaar: 2023-2024
+                  deelnemersgroep:
+                    instellingscode: 99XX
+                    vestigingscode: "00"
+                    onderwijsaanbiedercode: 123A123
+                    onderwijslocatiecode: 123X123
+                    administratienr: "99"
+                  groepen:
+                  - label: Stamgroep
+                    id: groep-abc123
+                    omschrijving: 8A
+                    niveau:
+                      label: Jaargroep
+                      niveau: "8"
+                  deelnemers:
+                  - label: Leerling
+                    deelnemerref:
+                    - label: ECK-iD
+                      onderwijsdeelnemerID: leerling-abc123
+                    achternaam: Achternaam01
+                    voorvoegsel: van der
+                    roepnaam: Roepnaam01
+                    groep: groep-abc123
+                    niveau:
+                      label: Jaargroep
+                      niveau: "8"
+                    extensie:
+                      label: Demografisch
+                      voorletters: ABC
+                      geboortedatum: 2011-05-12
+                      geslacht: 1
+                  - label: Leerling
+                    deelnemerref:
+                    - label: LAS-key
+                      onderwijsdeelnemerID: leerling-ajhdieh4841ejddal
+                    achternaam: Achternaam02
+                    roepnaam: Roepnaam02
+                    groep: groep-abc123
+                    niveau:
+                      label: Jaargroep
+                      niveau: "7"
+                    extensie:
+                      label: Demografisch
+                      voorletters: DEF
+                      geboortedatum: 2012-05-12
+                      geslacht: 2
+        required: true
+      responses:
+        "202":
+          description: Bericht succesvol ontvangen en wordt asynchroon verwerkt.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ontvangstmelding'
+        "401":
+          description: Verzender en/of ontvanger van bericht is niet geautoriseerd door de betreffende school.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ontvangstmelding'
+        "403":
+          description: Inschrijving is gesloten.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ontvangstmelding'
+        "405":
+          description: School is (nog) niet bekend bij de toetsleverancier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ontvangstmelding'
+        "422":
+          description: Bericht ontvangen maar heeft ongeldige berichtinhoud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ontvangstmelding'
+      x-codegen-request-body-name: body
+  /leerlingresultaat:
+    post:
+      tags:
+      - Toetsresultaten
+      summary: Overdragen leerlingresultaat
+      description: "Aanlevering van score- en resultaatgegevens van een leerling op de doorstroomtoets volgens standlevering, d.w.z. iedere laatste aanlevering van de leerling is de meest actuele en volledige verzameling leerlingresultaatgegevens, exclusief het leerlingrapport. Deze overdracht kan nieuw zijn (eerste aanlevering) of een update (alle vervolgleveringen)."
+      operationId: postLeerlingresultaat
+      parameters:
+      - name: edu-to
+        in: query
+        description: "Dit geeft aan namens welke school de LAS-leverancier het bericht ontvangt. De waarde is het routeringskenmerk van de betreffende schooladministratie. Deze parameter is verplicht volgens de Edukoppeling REST/SaaS-profiel. Let op, de waarde komt uit de \"edu-from\" query parameter zoals meegezonden in de aanlevering van doorstroomtoetsdeelnemers. De waarde is code van 20 karakters, met alleen cijfers en letters."
+        required: true
+        style: form
+        explode: false
+        schema:
+          pattern: "(\\d|\\D){20}"
+          type: string
+        example: 0000000700011BB00530
+      - name: edu-from
+        in: query
+        description: "Dit geeft aan namens welke school de toetsleverancier het bericht verzendt. De waarde is hetSchool OIN (omdat het routeringskenmerk voor de toetsleverancier in het OSR vooralsnog niet bestaat). Deze parameter is verplicht volgens de Edukoppeling REST/SaaS-profiel. De waarde is code van 20 karakters, met alleen cijfers en letters."
+        required: true
+        style: form
+        explode: false
+        schema:
+          pattern: "(\\d|\\D){20}"
+          type: string
+        example: 0000000700011BB00000
+      requestBody:
+        description: Leerlingresultaat met score- en resultaatgegevens van een leerling op de doorstroomtoets.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Leerlingresultaat'
+            examples:
+              Leerlingresultaat:
+                value:
+                  datumtijd: 2023-05-10T11:44:00Z
+                  auteur: Toetssysteem xyz
+                  versie: Doorstroomtoetsketen_v1
+                  profiel: Leerlingtoetsresultaat
+                  schooljaar: 2023-2024
+                  resultatenscores:
+                    id: resultatenscores-abc123
+                    deelnemerref:
+                    - label: ECK-iD
+                      onderwijsdeelnemerID: leerling-abc123
+                    versie: Definitief
+                    datumtijd: 2023-05-05T11:44:00Z
+                    toetsdefinitie: ICE
+                    afnamecontext:
+                      afname:
+                        id: afname-abc123
+                        afnametijdstip: 2023-04-28T11:44:00Z
+                  scores:
+                    id: scores-abc123
+                    scores:
+                    - label: Toetsscore
+                      id: score-def456
+                      waarde: 100
+                    - label: Aantal opgaven
+                      id: score-abc123
+                      waarde: 50
+                  resultaten:
+                    aanvullendeinfo: "toetsleverancier-endpoint/dst/leerlingrapport/{rapportid}"
+                    resultaten:
+                    - label: Toetsadvies
+                      waarde: vwo
+                    - label: Referentieniveau
+                      toetseenheid: REKENEN
+                      waarde: 1S
+                    - label: Referentieniveau
+                      toetseenheid: LEZEN
+                      waarde: 1F
+                    - label: Referentieniveau
+                      toetseenheid: TAALVERZORGING
+                      waarde: L1F
+                  toets:
+                    label: Doorstroomtoets
+                    id: ICE
+                    naam: IEP Doorstroomtoets
+                    versie: IEP papier
+                    url: https://iepdoorstroomtoets.nl
+                    omschrijving: blabla
+                    toetsonderdelen:
+                    - label: Onderdeel
+                      id: REKENEN
+                      omschrijving: Rekenen
+                    - label: Onderdeel
+                      id: NEDERLANDSE_TAAL
+                      toetsonderdelen:
+                      - label: Domein
+                        id: LEZEN
+                        omschrijving: Lezen
+                      - label: Domein
+                        id: TAALVERZORGING
+                        omschrijving: Taalverzorging
+        required: true
+      responses:
+        "202":
+          description: Bericht succesvol ontvangen en wordt asynchroon verwerkt.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ontvangstmelding'
+        "401":
+          description: Verzender en/of ontvanger van bericht is niet geautoriseerd door de betreffende school.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ontvangstmelding'
+        "405":
+          description: School is niet bekend bij ontvanger.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ontvangstmelding'
+        "422":
+          description: Bericht ontvangen maar heeft ongeldige berichtinhoud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ontvangstmelding'
+      x-codegen-request-body-name: body
+  /leerlingrapport/{rapportid}:
+    get:
+      tags:
+      - Toetsresultaten
+      summary: Opvragen leerlingrapport
+      description: Opvragen van het leerlingrapport van een specifieke leerling als resultaat op de doorstroomtoets.
+      operationId: getresourceleerlingrapportRapportid
+      parameters:
+      - name: rapportid
+        in: path
+        description: Het id van het leerlingrapport
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: fceea73b-4aab-48fc-9f92-52f8b9230ca8
+      - name: edu-to
+        in: query
+        description: "Dit geeft aan namens welke school de toetsleverancier het bericht ontvangt. De waarde is het School OIN (omdat het routeringskenmerk voor de toetsleverancier in het OSR vooralsnog niet bestaat). Deze parameter is verplicht volgens de Edukoppeling REST/SaaS-profiel. De waarde is code van 20 karakters, met alleen cijfers en letters."
+        required: true
+        style: form
+        explode: false
+        schema:
+          pattern: "(\\d|\\D){20}"
+          type: string
+        example: 0000000700011BB00000
+      - name: edu-from
+        in: query
+        description: "Dit geeft aan namens welke school de LAS-leverancier het bericht verzendt. De waarde is het routeringskenmerk van de betreffende schooladministratie. Deze parameter is verplicht volgens de Edukoppeling REST/SaaS-profiel. De waarde is code van 20 karakters, met alleen cijfers en letters."
+        required: true
+        style: form
+        explode: false
+        schema:
+          pattern: "(\\d|\\D){20}"
+          type: string
+        example: 0000000700011BB00530
+      responses:
+        "200":
+          description: "Operatie succesvol, leerlingrapport in PDF-formaat."
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        "204":
+          description: "Operatie succesvol, geen leerlingrapport beschikbaar."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ontvangstmelding'
+        "404":
+          description: Leerlingrapport niet bekend.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ontvangstmelding'
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    Afname:
+      required:
+      - afnametijdstip
+      - id
+      type: object
+      properties:
+        id:
+          title: Id
+          minLength: 1
+          type: string
+          description: "Verwijsbare identificatie van deze afnamegegevens, minimaal uniek binnen de scope van de doorstroomtoets."
+          example: afname-abc123
+        afnametijdstip:
+          title: Afnametijdstip
+          type: string
+          description: "Datum en tijdstip van start van de afname van de doorstroomtoets. Indien alleen datum bekend is, hier als tijdstip '00:00:00' invullen, bijvoorbeeld '2020-06-15T00:00:00Z'."
+          format: date-time
+          example: 2022-01-06T15:00:00Z
+      description: Enkelvoudige contextbeschrijving waarop de doorstroomtoets is afgenomen.
+    Afnamecontext:
+      required:
+      - afname
+      type: object
+      properties:
+        afname:
+          $ref: '#/components/schemas/Afname'
+      description: Context (datumtijdstip) waarin de doorstroomtoets is afgenomen.
+    DeelnemerIdentiteitEntry:
+      required:
+      - label
+      - onderwijsdeelnemerID
+      type: object
+      properties:
+        label:
+          $ref: '#/components/schemas/LeerlingIdsoort_enum'
+        onderwijsdeelnemerID:
+          title: OnderwijsdeelnemerID
+          type: string
+          description: Betekenisvolle identifier binnen de door het label aangegeven aanduiding van identifiers.
+          example: leerling-abc123
+      description: |-
+        Verwijzing naar informatie over de persoon in de vorm van een identifier van de persoon in een bepaalde registratie.
+
+        Voorbeelden van identificatiewijzen zijn ECKiD, BSN, Onderwijsnummer, of elke andere registratie (bijvoorbeeld LAS, SIS of HR-systeem) waaraan een identiteit kan worden ontleend. Afhankelijk van de toepassing is het gebruik van bepaalde vormen van identificatie al dan niet toegestaan.
+    Deelnemersgroep:
+      required:
+      - administratienr
+      - instellingscode
+      - onderwijsaanbiedercode
+      - onderwijslocatiecode
+      - vestigingscode
+      type: object
+      properties:
+        instellingscode:
+          title: Instellingscode
+          type: string
+          description: Identificatie van de deelnemersgroep als de code van de instellingserkenning binnen RIO. Waarde altijd tekst van 4 karakters (2 cijfers en 2 letters).
+          example: 99XX
+        vestigingscode:
+          title: Vestigingscode
+          type: string
+          description: De code van de vestigingserkenning binnen RIO behorende bij de deelnemersgroep. Waarde altijd tekst van 2 karakters (2 cijfers).
+          example: "0"
+        onderwijsaanbiedercode:
+          title: OnderwijsaanbiederID
+          type: string
+          description: "De code van de onderwijsaanbieder binnen RIO behorende bij de deelnemersgroep. Waarde altijd tekst van 7 karakters (3 cijfers, letter A, 3 cijfers)."
+          example: 123A123
+        onderwijslocatiecode:
+          title: Onderwijslocatiecode
+          type: string
+          description: "De code van de onderwijslocatie binnen RIO behorende bij de deelnemersgroep. Waarde altijd tekst van 7 karakters (3 cijfers, letter X, 3 cijfers)."
+          example: 123X123
+        administratienr:
+          title: Administratienummer
+          type: string
+          description: Identificatie van de deelnemersgroep m.b.t. een door de onderwijsaanbieder in het LAS ingevoerd nummer. Het is de formele Vestigingscode of een vestigingsvolgnummer dat buiten deze uitwisseling geen betekenis heeft (dus geen formele Vestigingscode). Het dient vooral om verschillende administraties binnen de context van de dezelfde overige codes binnen dit gegevensblok te kunnen onderscheiden. Waarde altijd tekst van 2 karakters (2 cijfers).
+          example: "99"
+      description: Gegevens over de groep leerlingen van de Deelnemerslijst waarop de leerlinggegevens betrekking hebben. Dit blok is verplicht en komt exact 1 keer voor.
+    Deelnemerslijst:
+      required:
+      - auteur
+      - datumtijd
+      - deelnemers
+      - deelnemersgroep
+      - groepen
+      - profiel
+      - schooljaar
+      - versie
+      type: object
+      properties:
+        datumtijd:
+          title: Datumtijd
+          type: string
+          description: Datum en tijdstip van aanmaken van de Deelnemerslijst.
+          format: date-time
+          example: 2023-04-06T17:00:00Z
+        auteur:
+          title: Auteur
+          minLength: 1
+          type: string
+          description: "De persoon, applicatie en/of organisatie die de Deelnemerslijst heeft gemaakt."
+          example: Applicatie xyz
+        versie:
+          title: Afspraakversie
+          minLength: 1
+          type: string
+          description: De versie van de afspraak volgens welke de Deelnemerslijst is opgemaakt; waarde is voor de huidige specs altijd "Doorstroomtoetsketen_v1.0".
+          example: Doorstroomtoetsketen_v1.0
+          enum:
+          - Doorstroomtoetsketen_v1.0
+        profiel:
+          title: Profiel
+          minLength: 1
+          type: string
+          description: Het profiel volgens welke de Deelnemerslijst is opgemaakt; waarde is altijd "Toetsdeelnemers".
+          example: Toetsdeelnemers
+          enum:
+          - Toetsdeelnemers
+        schooljaar:
+          title: Schooljaar
+          minLength: 1
+          type: string
+          description: "Aanduiding van het schooljaar waarop de gegevens in de Deelnemerslijst betrekking hebben; waarde is altijd volgens patroon \"EEJJ-EEJJ\", zoals bijvoorbeeld \"2023-2024\"."
+          example: 2023-2024
+        deelnemersgroep:
+          $ref: '#/components/schemas/Deelnemersgroep'
+        groepen:
+          title: Stamgroepen
+          minItems: 1
+          type: array
+          description: Gegevenslijst van de stamgroepen van de Deelnemerslijst waarop de leerlinggegevens betrekking hebben. Minimaal 1 Stamgroep is verplicht en er kunnen meerdere Stamgroepen voorkomen.
+          items:
+            $ref: '#/components/schemas/Groep'
+        deelnemers:
+          title: Leerlingen
+          minItems: 1
+          type: array
+          description: Gegevenslijst van de leerlingen in de Deelnemerslijst. Minimaal 1 Leerling is verplicht en er kunnen meerdere leerlingen voorkomen.
+          items:
+            $ref: '#/components/schemas/Onderwijsdeelnemer'
+      description: Bundel van gegevens over deelnemers aan de doorstroomtoets.
+    Demografisch:
+      required:
+      - geboortedatum
+      - geslacht
+      - label
+      - voorletters
+      type: object
+      properties:
+        label:
+          title: Typelabel
+          minLength: 1
+          type: string
+          description: Typering van de toegevoegde gegevens van de onderwijsdeelnemer. Waarde hier altijd "Demografisch".
+          example: Demografisch
+          enum:
+          - Demografisch
+        voorletters:
+          title: Voorletters
+          type: string
+          description: "De voorletters van de leerling. Waarde is verzameling letters die wordt gevormd door de eerste letter van alle in volgorde voorkomende voornamen [NEN 1888]; dus geen spaties en geen punten, maximaal 6 posities."
+          example: ABC
+        geboortedatum:
+          title: Geboortedatum
+          type: string
+          description: "Geboortedatum van de onderwijsdeelnemer. Dit gegeven is noodzakelijk voor vermelding op het leerlingrapport. Waarde is datum volgens formaat EEYY-MM-DD van ISO 8601, bijvoorbeeld 2010-12-31."
+          format: date
+        geslacht:
+          $ref: '#/components/schemas/Geslachttype_enum'
+      description: Demografische gegevens van de onderwijsdeelnemer.
+    Domein:
+      required:
+      - id
+      - label
+      type: object
+      properties:
+        label:
+          title: Typelabel
+          minLength: 1
+          type: string
+          description: Typering van het toetsonderdeel; waarde hier altijd "Domein".
+          example: Domein
+          enum:
+          - Domein
+        id:
+          $ref: '#/components/schemas/Domeincode_enum'
+        omschrijving:
+          title: Domeinomschrijving
+          type: string
+          description: "Naam of aanduiding van het onderdeel, bijvoorbeeld \"Nederlandse taal - Lezen\"."
+          example: Nederlandse taal - Lezen
+        toetsonderdelen:
+          title: Subdomeinen
+          minItems: 0
+          type: array
+          description: Gegevenslijst van de subdomeinen van een domein binnen de doorstroomtoets.
+          items:
+            $ref: '#/components/schemas/Subdomein'
+      description: "Onderdeel van onderdeel van doorstroomtoets, bijvoorbeeld Taalverzorging en Lezen binnen het onderdeel Nederlandse taal."
+    Domeincode_enum:
+      type: string
+      description: Waardelijst voor typering van domein van doorstroomtoets.<body><ul><li>`LEZEN` - Nederlandse taal - Lezen </li><li>`TAALVERZORGING` - Nederlandse taal - Taalverzorging </li><li>`8052` - Nederlandse taal - Woordenschat </li><li>`8053` - Nederlandse taal - Schrijven </li><li>`8054` - Nederlandse taal - Begrippenlijst </li><li>`8055` - Nederlandse taal - Luistervaardigheid </li><li>`8060` - Rekenen - Getallen </li><li>`8061` - Rekenen - Verhoudingen </li><li>`8062` - Rekenen - Meten en meetkunde </li><li>`8063` - Rekenen - Verbanden </li><li>`8064` - Rekenen - Begrip </li><li>`8065` - Rekenen - Bewerkingen </li><li>`8080` - Zelfconcept </li><li>`8081` - Werkhouding </li></ul></body>
+      example: LEZEN
+      enum:
+      - LEZEN
+      - TAALVERZORGING
+      - "8052"
+      - "8053"
+      - "8054"
+      - "8055"
+      - "8060"
+      - "8061"
+      - "8062"
+      - "8063"
+      - "8064"
+      - "8065"
+      - "8080"
+      - "8081"
+    Doorstroomtoets:
+      required:
+      - id
+      - label
+      - naam
+      - versie
+      type: object
+      properties:
+        label:
+          title: Typelabel
+          minLength: 1
+          type: string
+          description: Typering van de toets; waarde hier altijd "Doorstroomtoets".
+          example: Doorstroomtoets
+          enum:
+          - Doorstroomtoets
+        id:
+          $ref: '#/components/schemas/Toetssoort_enum'
+        naam:
+          title: Naam
+          minLength: 1
+          type: string
+          description: Naam van doorstroomtoets.
+          example: Route 8
+        versie:
+          title: Versie
+          minLength: 1
+          type: string
+          description: Versie-aanduiding van de doorstroomtoets.
+          example: Doorstroomtoets op papier
+        url:
+          title: URL
+          type: string
+          description: URL naar verdere informatie over de doorstroomtoets.
+          example: https://www.doorstroomtoetsxyz.nl
+        omschrijving:
+          title: Omschrijving
+          type: string
+          description: Omschrijving van doorstroomtoets.
+          example: CET papier zonder wereldoriëntatie
+        toetsonderdelen:
+          title: Onderdelen
+          minItems: 1
+          type: array
+          description: Onderdelen binnen doorstroomtoets.
+          items:
+            $ref: '#/components/schemas/Onderdeel'
+      description: "Gegevens over de doorstroomtoets, inclusief onderdelen, domeinen en subdomeinen waarop de scores en resultaten betrekking hebben. De doorstroomtoets wordt sinds 2024 verplicht afgenomen aan het einde van de PO, als opvolger van de eindtoets."
+    Geslachttype_enum:
+      type: integer
+      description: Waardelijst voor typering van het geslacht van de leerling.<body><ul><li>`1` - Man </li><li>`2` - Vrouw </li><li>`9` - Niet gespecificeerd </li></ul></body>
+      example: 2
+      enum:
+      - 1
+      - 2
+      - 9
+    Groep:
+      required:
+      - id
+      - label
+      - niveau
+      - omschrijving
+      type: object
+      properties:
+        label:
+          title: Typelabel
+          minLength: 1
+          type: string
+          description: Typering van de groep; waarde is in deze uitwisseling altijd "Stamgroep".
+          example: Stamgroep
+          enum:
+          - Stamgroep
+        id:
+          title: Id
+          maxLength: 256
+          minLength: 1
+          type: string
+          description: "Betekenisloze identifier van de groep, minimaal uniek binnen de scope van de doorstroomtoets. Deze identifier wordt middels verwijzing gebruikt bij Onderwijsdeelnemer. LAS zorgt voor uniciteit binnen de gegevensuitwisselingen m.b.t. de doorstroomtoets. De waarde is maximaal 256 karakters."
+          example: groep-abc123
+        omschrijving:
+          title: Omschrijving
+          maxLength: 64
+          type: string
+          description: "Omschrijving, naam of aanduiding van groep. De waarde is maximaal 64 karakters."
+          example: 8A
+        niveau:
+          $ref: '#/components/schemas/Groepsniveau'
+      description: Verzameling van onderwijsdeelnemers.
+    GroepJaargroeptype_enum:
+      type: string
+      description: Waardelijst voor typering van het niveau (jaargroep) van de groep.<body><ul><li>`7` - PO groep 7 </li><li>`8` - PO groep 8 </li><li>`C` - Combinatie </li><li>`S` - SO / SBO </li></ul></body>
+      example: "8"
+      enum:
+      - "7"
+      - "8"
+      - C
+      - S
+    Groepsniveau:
+      required:
+      - label
+      - niveau
+      type: object
+      properties:
+        label:
+          title: Typelabel
+          type: string
+          description: Aanduiding van het type onderwijsniveau; waarde hier altijd "Jaargroep".
+          example: Jaargroep
+          enum:
+          - Jaargroep
+        niveau:
+          $ref: '#/components/schemas/GroepJaargroeptype_enum'
+    LeerlingIdsoort_enum:
+      type: string
+      description: "Waardelijst voor typering van het soort identiteit van de leerling.<body><ul><li>`ECK-iD` - Het ECK-iD id de ID van de leerling in de leermiddelenketen en per definitie persistent over meerdere uitwisselingen heen. Het ECK-iD is een versleutelde versie van het persoonsgebonden nummer (PGN) en daarmee uniek en sterk beveiligd. Gebruik van het ECK-iD is wettelijk bedoeld voor de Educatieve ContentKeten (zie: https://www.eck-id.nl/). </li><li>`LAS-key` - De LAS-key is de betekenisloze identifier van de leerling (onderwijsdeelnemer), minimaal uniek binnen de scope van deze ketensamenwerking. LAS zorgt voor uniciteit binnen de gegevensuitwisselingen m.b.t. deze keten. Deze identifier wordt daarom ook wel LAS-key genoemd. De LAS-key is maximaal 256 karakters. </li></ul></body>"
+      example: ECK-iD
+      enum:
+      - ECK-iD
+      - LAS-key
+    LeerlingJaargroeptype_enum:
+      type: string
+      description: Waardelijst voor typering van het niveau (jaargroep) van de leerling.<body><ul><li>`7` - PO groep 7 </li><li>`8` - PO groep 8 </li></ul></body>
+      example: "8"
+      enum:
+      - "7"
+      - "8"
+    LeerlingResultatenScores:
+      required:
+      - afnamecontext
+      - deelnemerref
+      - id
+      - resultaten
+      - toetsdefinitie
+      - versie
+      type: object
+      properties:
+        id:
+          title: Id
+          type: string
+          example: resultatenscores-abc123
+        deelnemerref:
+          title: Leerling
+          maxItems: 2
+          minItems: 1
+          type: array
+          description: "Verwijzing naar betreffende leerling die de scores en resultaten heeft behaald middels een identifier in het blok LeerlingIdentiteit, zie LeerlingIdentiteit (DeelnemerIdentiteitEntry) in paragraaf 3.1.2. Let op, bij dubbele LeerlingIdentiteiten is het ECK-iD leidend."
+          items:
+            $ref: '#/components/schemas/DeelnemerIdentiteitEntry'
+        versie:
+          title: Versie
+          type: string
+          description: Versie van de verzameling scores en resultaten.
+          example: Definitief
+        datumtijd:
+          title: Datumtijd
+          type: string
+          description: Datum en tijdstip waarop de verzameling resultaten en scores is samengesteld.
+          format: date-time
+        toetsdefinitie:
+          title: Toetsdefinitie
+          type: string
+          description: "Verwijzing naar de toetsdefinitie waarop de scores en resultaten betrekking hebben. Waarde hier altijd verwijzing naar de doorstroomtoets. Let op, gegeven \"Code toets\" van Verplichte Doorstroomtoets is verplicht."
+          example: ROUTE_8
+        afnamecontext:
+          $ref: '#/components/schemas/Afnamecontext'
+        scores:
+          $ref: '#/components/schemas/Scores'
+        resultaten:
+          $ref: '#/components/schemas/Resultaten'
+      description: Bundel van gegevens over scores en resultaten van een leerling.
+    Leerlingniveau:
+      required:
+      - label
+      - niveau
+      type: object
+      properties:
+        label:
+          title: Typelabel
+          type: string
+          description: Aanduiding van het type onderwijsniveau; waarde hier altijd "Jaargroep".
+          example: Jaargroep
+          enum:
+          - Jaargroep
+        niveau:
+          $ref: '#/components/schemas/LeerlingJaargroeptype_enum'
+    Leerlingresultaat:
+      required:
+      - auteur
+      - datumtijd
+      - profiel
+      - resultatenscores
+      - schooljaar
+      - toets
+      - versie
+      type: object
+      properties:
+        datumtijd:
+          title: Datumtijd
+          type: string
+          description: Datum en tijdstip van aanmaken van het Leerlingresultaat.
+          format: date-time
+        auteur:
+          title: Auteur
+          minLength: 1
+          type: string
+          description: "De persoon, applicatie en/of organisatie die het Leerlingresultaat heeft gemaakt."
+          example: Applicatie xyz
+        versie:
+          title: Afspraakversie
+          minLength: 1
+          type: string
+          description: De versie van de afspraak volgens welke het Leerlingresultaat is opgemaakt; waarde is voor de huidige specs altijd "Doorstroomtoetsketen_v1.0".
+          example: Doorstroomtoetsketen_v1.0
+          enum:
+          - Doorstroomtoetsketen_v1.0
+        profiel:
+          title: Profiel
+          minLength: 1
+          type: string
+          description: Het profiel volgens welke de gegevens opgemaakt; waarde is altijd "Leerlingtoetsresultaat".
+          example: Leerlingtoetsresultaat
+          enum:
+          - Leerlingtoetsresultaat
+        schooljaar:
+          title: Schooljaar
+          minLength: 1
+          type: string
+          description: "Aanduiding van het schooljaar waarop de gegevens in het Leerlingresultaat betrekking hebben; waarde is altijd volgens patroon \"EEJJ-EEJJ\", zoals bijvoorbeeld \"2023-2024\"."
+          example: 2023-2024
+        resultatenscores:
+          $ref: '#/components/schemas/LeerlingResultatenScores'
+        toets:
+          $ref: '#/components/schemas/Doorstroomtoets'
+      description: Bundel van gegevens over scores en resultaten van een leerling.
+    Onderdeel:
+      required:
+      - id
+      - label
+      type: object
+      properties:
+        label:
+          title: Typelabel
+          type: string
+          description: Typering van het toetsonderdeel; waarde hier altijd "Onderdeel".
+          example: Onderdeel
+          enum:
+          - Onderdeel
+        id:
+          $ref: '#/components/schemas/Onderdeelcode_enum'
+        omschrijving:
+          title: Omschrijving
+          type: string
+          description: "Naam of aanduiding van het onderdeel, bijvoorbeeld \"Nederlandse taal\" of \"Rekenen\"."
+          example: Nederlandse taal
+        toetsonderdelen:
+          title: Domeinen
+          minItems: 0
+          type: array
+          description: Gegevenslijst van de domeinen van een onderdeel van de doorstroomtoets.
+          items:
+            $ref: '#/components/schemas/Domein'
+    Onderdeelcode_enum:
+      type: string
+      description: Waardelijst voor typering van onderdeel van doorstroomtoets.<body><ul><li>`NEDERLANDSE_TAAL` - Nederlandse taal </li><li>`REKENEN` - Rekenen </li><li>`8002` - Wereldoriëntatie </li><li>`8003` - Functioneren </li></ul></body>
+      example: NEDERLANDSE_TAAL
+      enum:
+      - NEDERLANDSE_TAAL
+      - REKENEN
+      - "8002"
+      - "8003"
+    Onderwijsdeelnemer:
+      required:
+      - achternaam
+      - deelnemerref
+      - extensie
+      - groep
+      - label
+      - niveau
+      - roepnaam
+      type: object
+      properties:
+        label:
+          title: Typelabel
+          type: string
+          description: Typering van de onderwijsdeelnemer; waarde hier altijd "Leerling".
+          example: Leerling
+          enum:
+          - Leerling
+        deelnemerref:
+          title: Leerlingidentiteit
+          type: array
+          description: "Verwijzing naar de leerling waarop de gegevens betrekking hebben middels een identifier. Let op, bij dubbele leerlingidentiteiten is het ECK-iD leidend. Dit gegeven is verplicht en komt 1 of 2 keren voor volgens volgende werkingsregel Indien de leerling een ECK-iD heeft moet het \"ECK-iD\" als LeerlingIdentiteit worden gebruikt, eventueel aangevuld met het \"LAS-key\" als aanvullende LeerlingIdentiteit. Als de leerling geen ECK-iD heeft, moet het LAS-key als LeerlingIdentiteit worden gebruikt.."
+          items:
+            $ref: '#/components/schemas/DeelnemerIdentiteitEntry'
+        achternaam:
+          title: Achternaam
+          maxLength: 70
+          type: string
+          description: "Achternaam van de doorstroomtoetsdeelnemer. Waarde is het significante deel van de achternaam, zonder voorvoegsel en zonder de scheidingsspatie volgend op het voorvoegsel [NEN 1888]. De waarde is maximaal 70 karakters."
+          example: Achternaam01
+        voorvoegsel:
+          title: Voorvoegsel
+          maxLength: 10
+          type: string
+          description: "Voorvoegsel van de leerling.Waarde is de verzameling van een of meer voorzetsels en/of lidwoorden die aan het significante deel van de achternaam vooraf gaat en daarmee gezamenlijk de achternaam vormt [NEN 1888]. De waarde is maximaal 10 karakters."
+          example: van der
+        roepnaam:
+          title: Roepnaam
+          maxLength: 64
+          type: string
+          description: Roepnaam van de leerling. De waarde is maximaal 64 karakters.
+          example: Aatje
+        groep:
+          title: Stamgroep
+          type: string
+          description: Verwijzing naar de stamgroep van de leerling; waarde is Id van een Stamgroep.
+          example: groep-abc123
+        niveau:
+          $ref: '#/components/schemas/Leerlingniveau'
+        extensie:
+          $ref: '#/components/schemas/Demografisch'
+    Resultaat:
+      required:
+      - label
+      - waarde
+      type: object
+      properties:
+        label:
+          $ref: '#/components/schemas/Resultaatsoort_enum'
+        toetseenheid:
+          title: Toetseenheid
+          type: string
+          description: "Verwijzing naar het toetsonderdeel binnen de doorstroomtoets (Onderdeel, Domein of Subdomein) waarop het resultaat betrekking heeft. De waarde is de id van het betreffende toetsonderdeel. Indien het een resultaat voor de gehele doorstroomtoets betreft dan ontbreekt dit veld!."
+          example: DIA
+        waarde:
+          title: Waarde
+          type: string
+          description: Waarde van dit resultaat.
+          example: vwo
+      description: Gegevens van de resultaten van een leerling.
+    Resultaatsoort_enum:
+      type: string
+      description: Waardelijst voor typering van resultaat.<body><ul><li>`Referentieniveau` - Resultaat is het referentieniveau voor Rekenen en Taal (Lezen en Taalverzorging). </li><li>`Toetsadvies` -  Resultaat is het Toetsadvies op basis van de Toetsscore. </li><li>`Percentielscore` - Resultaat is de percentielscore van een specifieke toetseenheid. </li></ul></body>
+      example: Toetsadvies
+      enum:
+      - Referentieniveau
+      - Toetsadvies
+      - Percentielscore
+    Resultaten:
+      required:
+      - resultaten
+      type: object
+      properties:
+        aanvullendeinfo:
+          title: Aanvullende info
+          type: string
+          example: "toetsleverancier-endpoint/dst/leerlingrapport/{rapportid}"
+        resultaten:
+          title: Resultaten
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Resultaat'
+    Score:
+      required:
+      - id
+      - label
+      - waarde
+      type: object
+      properties:
+        label:
+          $ref: '#/components/schemas/Scoresoort_enum'
+        id:
+          title: Id
+          type: string
+          description: Identificatie van deze score.
+          example: score-abc123
+        toetseenheid:
+          title: Toetseenheid
+          type: string
+          description: "Verwijzing naar het toetsonderdeel binnen de doorstroomtoets (Onderdeel, Domein of Subdomein) waarop de score betrekking heeft. De waarde is de id van het betreffende toetsonderdeel. Indien het een score voor de gehele doorstroomtoets betreft dan ontbreekt dit veld."
+          example: AMN
+        waarde:
+          title: Waarde
+          type: string
+          description: "Waarde van de score. Let op, deze totaalscore is als \"Score\" van Verplichte Doorstroomtoets verplicht volgens PvE ROD-po."
+          example: "200"
+    Scores:
+      required:
+      - id
+      - scores
+      type: object
+      properties:
+        id:
+          title: Id
+          type: string
+          example: scores-abc123
+        scores:
+          title: Scores
+          minItems: 0
+          type: array
+          items:
+            $ref: '#/components/schemas/Score'
+    Scoresoort_enum:
+      type: string
+      description: "Waardelijst voor typering van de score.<body><ul><li>`Aantal opgaven` - Het aantal gemaakte opgaven. </li><li>`Aantal goed` -  Het aantal goed gemaakte opgaven. </li><li>`Detailscore` - Score van aantal behaalde punten op specifiek toetseenheid (Onderdeel, Domein of Subdomein) van de Doorstroomtoets PO. </li><li>`Toetsscore` - Score van het totaal aantal behaalde punten op de Doorstroomtoets PO. </li></ul></body>"
+      example: Aantal opgaven
+      enum:
+      - Aantal opgaven
+      - Aantal goed
+      - Detailscore
+      - Toetsscore
+    Subdomein:
+      required:
+      - id
+      - label
+      type: object
+      properties:
+        label:
+          title: Typelabel
+          type: string
+          description: Typering van het toetsonderdeel; waarde hier altijd "Subdomein".
+          example: Subdomein
+          enum:
+          - Subdomein
+        id:
+          $ref: '#/components/schemas/Subdomeincode_enum'
+        omschrijving:
+          title: Omschrijving
+          type: string
+          description: Naam of aanduiding van het subdomein.
+          example: Lezen - Begrijpend lezen
+    Subdomeincode_enum:
+      type: string
+      description: "Waardelijst voor typering van subdomein van doorstroomtoets.<body><ul><li>`9000` - Taalverzorging - Spelling werkwoorden </li><li>`9001` - Taalverzorging - Spelling niet-werkwoorden </li><li>`9003` - Taalverzorging - Interpunctie </li><li>`9010` - Lezen - Begrijpend lezen </li><li>`9011` - Lezen - Opzoeken </li><li>`9012` - Lezen - Samenvatten </li><li>`9013` - Lezen - Techniek en woordenschat </li><li>`9014` - Lezen - Interpreteren, evalueren en samenvatten </li></ul></body>"
+      example: "9010"
+      enum:
+      - "9000"
+      - "9001"
+      - "9003"
+      - "9010"
+      - "9011"
+      - "9012"
+      - "9013"
+      - "9014"
+    Toetssoort_enum:
+      type: string
+      description: Waardelijst voor identificatie van het soort doorstroomtoets.<body><ul><li>`ROUTE_8` - Route 8 </li><li>`ICE` - IEP </li><li>`DIA` - Dia doorstroomtoets </li><li>`AMN` - AMN Doorstroomtoets </li><li>`LEERLING_IN_BEELD` - Cito BV Doorstroomtoets </li><li>`DOE` - Cito Stichting Doorstroomtoets </li><li>`CALAMITEITENTOETS` - Cito Stichting Calamiteitentoets </li></ul></body>
+      example: ROUTE_8
+      enum:
+      - ROUTE_8
+      - ICE
+      - DIA
+      - AMN
+      - LEERLING_IN_BEELD
+      - DOE
+      - CALAMITEITENTOETS
+    Ontvangstmelding:
+      type: object
+      properties:
+        melding:
+          type: string
+          description: Tekstuele toelichting waarom het verzoek wel of niet geslaagd is. Deze toelichting zou moeten corresponderen met de meldingstekst uit de specs bij de betreffende statuscode.
