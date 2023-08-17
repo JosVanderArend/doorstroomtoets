@@ -24,7 +24,7 @@ info:
     \ zijn nu aparte componenten) en aangevuld overeenkomstig de specs (zoals eigenschap\
     \ 'title' met de naam van dit gegeven in de specs).\nIn de laaste update van 16\
     \ mei 2023 zijn de waarden van versie binnen heenbericht en terugbericht in overeenstemming\
-    \ met Specs gecorrigeerd."
+    \ met Specs gecorrigeerd. "
   contact:
     name: Jos van der Arend (Kennisnet)
     url: https://app.swaggerhub.com/apis-docs/Kennisnet/Doorstroomtoets/1.0
