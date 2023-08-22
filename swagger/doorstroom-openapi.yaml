@@ -229,29 +229,29 @@ paths:
                       afname:
                         id: afname-abc123
                         afnametijdstip: 2023-04-28T11:44:00Z
-                  scores:
-                    id: scores-abc123
                     scores:
-                    - label: Toetsscore
-                      id: score-def456
-                      waarde: 100
-                    - label: Aantal opgaven
-                      id: score-abc123
-                      waarde: 50
-                  resultaten:
-                    aanvullendeinfo: "toetsleverancier-endpoint/dst/leerlingrapport/{rapportid}"
+                      id: scores-abc123
+                      scores:
+                      - label: Toetsscore
+                        id: score-def456
+                        waarde: 100
+                      - label: Aantal opgaven
+                        id: score-abc123
+                        waarde: 50
                     resultaten:
-                    - label: Toetsadvies
-                      waarde: vwo
-                    - label: Referentieniveau
-                      toetseenheid: REKENEN
-                      waarde: 1S
-                    - label: Referentieniveau
-                      toetseenheid: LEZEN
-                      waarde: 1F
-                    - label: Referentieniveau
-                      toetseenheid: TAALVERZORGING
-                      waarde: L1F
+                      aanvullendeinfo: "toetsleverancier-endpoint/dst/leerlingrapport/{rapportid}"
+                      resultaten:
+                      - label: Toetsadvies
+                        waarde: vwo
+                      - label: Referentieniveau
+                        toetseenheid: REKENEN
+                        waarde: 1S
+                      - label: Referentieniveau
+                        toetseenheid: LEZEN
+                        waarde: 1F
+                      - label: Referentieniveau
+                        toetseenheid: TAALVERZORGING
+                        waarde: L1F
                   toets:
                     label: Doorstroomtoets
                     id: ICE
