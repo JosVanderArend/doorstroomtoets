@@ -421,7 +421,7 @@ components:
           title: Vestigingscode
           type: string
           description: De code van de vestigingserkenning binnen RIO behorende bij de deelnemersgroep. Waarde altijd tekst van 2 karakters (2 cijfers).
-          example: "0"
+          example: "00"
         onderwijsaanbiedercode:
           title: OnderwijsaanbiederID
           type: string
@@ -522,6 +522,7 @@ components:
           type: string
           description: "De voorletters van de leerling. Waarde is verzameling letters die wordt gevormd door de eerste letter van alle in volgorde voorkomende voornamen [NEN 1888]; dus geen spaties en geen punten, maximaal 6 posities."
           example: ABC
+          maxLength: 6
         geboortedatum:
           title: Geboortedatum
           type: string
@@ -959,7 +960,7 @@ components:
           title: Toetseenheid
           type: string
           description: "Verwijzing naar het toetsonderdeel binnen de doorstroomtoets (Onderdeel, Domein of Subdomein) waarop de score betrekking heeft. De waarde is de id van het betreffende toetsonderdeel. Indien het een score voor de gehele doorstroomtoets betreft dan ontbreekt dit veld."
-          example: AMN
+          example: Rekenen
         waarde:
           title: Waarde
           type: string
