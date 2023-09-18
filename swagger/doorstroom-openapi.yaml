@@ -2,14 +2,14 @@
 openapi: 3.0.1
 info:
   title: Doorstroomtoetsketen
-  description: "Dit is de OAS3-definitie versie 1.0 van de Doorstroomtoetsketen voor schooljaar 2023-2024. \n\nDeze versie is gebaseerd op eerdere definitie van de eindtoetsketen, en aangepast zoals besloten tijdens het ketenoverleg van 16 maart en 19 april 2023, dus inclusief: \n+ Overgang van standlevering naar mutatielevering voor Deelnemerslijst, \n+ Aanpassing meldingstekst bij foutcode 401, \n+ Aanpassing waardenlijsten aan ROD-po, \n+ In OSR nu wel beheer van mandaten van toetssystemen, niet van endpoints van toetssystemen,\n+ Enkele correcties en aanvullingen n.a.v. reviewcommentaar en om de specs en de defs beter te laten aansluiten.\n\nBij de implementatie met behulp van deze OAS3-definities zijn de volgende aanpassingen in deze defs t.o.v. voorgaande eindtoets-versie belangrijk:\n- Aanpassing meldingstekst bij foutcode 401 bij POST /registreren en POST /leerlingresultaat,\n- Eigenschappen versie en profiel binnen heen- en terugbericht hebben gewijzigde verplichte waarde,\n- Alle eigenschappen binnen Deelnemersgroep zijn nu verplicht,\n- Gegevensobject Eindtoets heet nu Doorstroomtoets,\n- Eigenschap versie binnen Doorstroomtoets is nu een optioneel vrij tekstveld (was verplicht met enumeratie),\n- Enumeraties zijn geactualiseerd en waarden uit koppeling ROD-po zijn overeenkomstig aangepast,\n- Voorbeelden zijn bijgewerkt en voorbeeldberichten zijn toegevoegd bij POST /registreren en POST /leerlingresultaat.\n\nVerder zijn de schemacomponenten nu alfabetisch gesorteerd en zijn schemacomponenten aangepast volgens de geautomatiseerde API-generatie uit de modellen (zoals waardenlijsten zijn nu aparte componenten) en aangevuld overeenkomstig de specs (zoals eigenschap 'title' met de naam van dit gegeven in de specs).\nIn de laaste update van 16 mei 2023 zijn de waarden van versie binnen heenbericht en terugbericht in overeenstemming met Specs gecorrigeerd."
+  description: "Dit is de OAS3-definitie versie 1.0.1 van de Doorstroomtoetsketen voor schooljaar 2023-2024. \n\nVersie 1.0 is gebaseerd op eerdere definitie van de eindtoetsketen, en aangepast zoals besloten tijdens het ketenoverleg van 16 maart en 19 april 2023, dus inclusief: \n+ Overgang van standlevering naar mutatielevering voor Deelnemerslijst, \n+ Aanpassing meldingstekst bij foutcode 401, \n+ Aanpassing waardenlijsten aan ROD-po, \n+ In OSR nu wel beheer van mandaten van toetssystemen, niet van endpoints van toetssystemen,\n+ Enkele correcties en aanvullingen n.a.v. reviewcommentaar en om de specs en de defs beter te laten aansluiten.\n\nBij de implementatie met behulp van deze OAS3-definities zijn de volgende aanpassingen in deze defs t.o.v. voorgaande eindtoets-versie belangrijk:\n- Aanpassing meldingstekst bij foutcode 401 bij POST /registreren en POST /leerlingresultaat,\n- Eigenschappen versie en profiel binnen heen- en terugbericht hebben gewijzigde verplichte waarde,\n- Alle eigenschappen binnen Deelnemersgroep zijn nu verplicht,\n- Gegevensobject Eindtoets heet nu Doorstroomtoets,\n- Eigenschap versie binnen Doorstroomtoets is nu een optioneel vrij tekstveld (was verplicht met enumeratie),\n- Enumeraties zijn geactualiseerd en waarden uit koppeling ROD-po zijn overeenkomstig aangepast,\n- Voorbeelden zijn bijgewerkt en voorbeeldberichten zijn toegevoegd bij POST /registreren en POST /leerlingresultaat.\n\nVerder zijn de schemacomponenten nu alfabetisch gesorteerd en zijn schemacomponenten aangepast volgens de geautomatiseerde API-generatie uit de modellen (zoals waardenlijsten zijn nu aparte componenten) en aangevuld overeenkomstig de specs (zoals eigenschap 'title' met de naam van dit gegeven in de specs).\nIn de laaste update van 16 mei 2023 zijn de waarden van versie binnen heenbericht en terugbericht in overeenstemming met Specs gecorrigeerd. \n\nIn versie 1.0.1 is de naamswijziging van Calamiteitentoets naar OCW Doorstroomtoets doorgevoerd samen met correcties conform de specs als: maximum lengte van voorletters van leerling is 6, attribuut versie binnen Doorstroomtoets is optioneel en attribuut toetsdefinitie verwijst naar enumeratie Toetssoort_enum. Verder zijn enkele voorbeeldwaarden gecorrigeerd."
   contact:
     name: Jos van der Arend (Kennisnet)
     url: https://app.swaggerhub.com/apis-docs/Kennisnet/Doorstroomtoets/1.0
     email: J.vanderArend@kennisnet.nl
-  version: "1.0"
+  version: 1.0.1
 servers:
-- url: https://virtserver.swaggerhub.com/Kennisnet/Doorstroomtoets/1.0
+- url: https://virtserver.swaggerhub.com/Kennisnet/Doorstroomtoets/1.0.1
   description: SwaggerHub API Auto Mocking
 - url: https://doorstroomtoets.edustandaard.nl/v1.0
 tags:
@@ -421,6 +421,8 @@ components:
           title: Vestigingscode
           type: string
           description: De code van de vestigingserkenning binnen RIO behorende bij de deelnemersgroep. Waarde altijd tekst van 2 karakters (2 cijfers).
+          # 20230814 correctie: gewijzigd
+          # example: "0"
           example: "00"
         onderwijsaanbiedercode:
           title: OnderwijsaanbiederID
@@ -522,6 +524,7 @@ components:
           type: string
           description: "De voorletters van de leerling. Waarde is verzameling letters die wordt gevormd door de eerste letter van alle in volgorde voorkomende voornamen [NEN 1888]; dus geen spaties en geen punten, maximaal 6 posities."
           example: ABC
+          # 20230814 correctie: toegevoegd
           maxLength: 6
         geboortedatum:
           title: Geboortedatum
@@ -584,7 +587,8 @@ components:
       - id
       - label
       - naam
-      - versie
+      # 20230814 correctie: verwijderd
+      #- versie
       type: object
       properties:
         label:
@@ -738,10 +742,12 @@ components:
           description: Datum en tijdstip waarop de verzameling resultaten en scores is samengesteld.
           format: date-time
         toetsdefinitie:
-          title: Toetsdefinitie
-          type: string
-          description: "Verwijzing naar de toetsdefinitie waarop de scores en resultaten betrekking hebben. Waarde hier altijd verwijzing naar de doorstroomtoets. Let op, gegeven \"Code toets\" van Verplichte Doorstroomtoets is verplicht."
-          example: ROUTE_8
+          # 20230814 correctie: gewijzigd
+          #title: Toetsdefinitie
+          #type: string
+          #description: "Verwijzing naar de toetsdefinitie waarop de scores en resultaten betrekking hebben. Waarde hier altijd verwijzing naar de doorstroomtoets. Let op, gegeven \"Code toets\" van Verplichte Doorstroomtoets is verplicht."
+          #example: ROUTE_8
+          $ref: '#/components/schemas/Toetssoort_enum'
         afnamecontext:
           $ref: '#/components/schemas/Afnamecontext'
         scores:
@@ -960,6 +966,8 @@ components:
           title: Toetseenheid
           type: string
           description: "Verwijzing naar het toetsonderdeel binnen de doorstroomtoets (Onderdeel, Domein of Subdomein) waarop de score betrekking heeft. De waarde is de id van het betreffende toetsonderdeel. Indien het een score voor de gehele doorstroomtoets betreft dan ontbreekt dit veld."
+          # 20230814 correctie: gewijzigd
+          # example: AMN
           example: Rekenen
         waarde:
           title: Waarde
@@ -1026,7 +1034,7 @@ components:
       - "9014"
     Toetssoort_enum:
       type: string
-      description: Waardelijst voor identificatie van het soort doorstroomtoets.<body><ul><li>`ROUTE_8` - Route 8 </li><li>`ICE` - IEP </li><li>`DIA` - Dia doorstroomtoets </li><li>`AMN` - AMN Doorstroomtoets </li><li>`LEERLING_IN_BEELD` - Cito BV Doorstroomtoets </li><li>`DOE` - Cito Stichting Doorstroomtoets </li><li>`CALAMITEITENTOETS` - Cito Stichting Calamiteitentoets </li></ul></body>
+      description: Waardelijst voor identificatie van het soort doorstroomtoets.<body><ul><li>`ROUTE_8` - Route 8 </li><li>`ICE` - IEP Doorstroomtoets </li><li>`DIA` - Dia doorstroomtoets </li><li>`AMN` - AMN Doorstroomtoets </li><li>`LEERLING_IN_BEELD` - Leerling in beeld-doorstroomtoets </li><li>`DOE` - Doe overheidsdoorstroomtoets </li><li>`OCW_DOORSTROOMTOETS` - OCW Doorstroomtoets </li></ul></body>
       example: ROUTE_8
       enum:
       - ROUTE_8
@@ -1035,7 +1043,7 @@ components:
       - AMN
       - LEERLING_IN_BEELD
       - DOE
-      - CALAMITEITENTOETS
+      - OCW_DOORSTROOMTOETS
     Ontvangstmelding:
       type: object
       properties:
