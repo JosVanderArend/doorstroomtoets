@@ -2,6 +2,7 @@
 API-definities voor Logistieke proces rondom de Doorstroomtoets in het PO bij afsprakenset "Logistiek Proces Doorstroomtoets po"
 De OAS3-definities (Defs) in YAML-bestand "doorstroomtoets-openapi.yaml" in de folder "swagger" zijn bedoeld voor de REST API t.b.v. Logisieke proces rondom de Doorstroomtoets PO versie 1.0 (voor schooljaar 2023-2024), zie hiervoor de documentatie (https://app.swaggerhub.com/apis-docs/Kennisnet/Doorstroomtoets/1.0#) en het YAML-bestand (https://raw.githubusercontent.com/JosVanderArend/doorstroomtoets/main/swagger/doorstroom-openapi.yaml).
 
+De meest recente versie is 1.0.1 waarbij de naamswijziging van Calamiteitentoets naar OCW Doorstroomtoets is doorgevoerd samen met correcties conform de specs als: maximum lengte van voorletters van leerling is 6, attribuut versie binnen Doorstroomtoets is optioneel en attribuut toetsdefinitie verwijst naar enumeratie Toetssoort_enum. Verder zijn enkele voorbeeldwaarden gecorrigeerd.
 
 Deze uitwisseling omvat 3 interacties die schematisch worden gepresenteerd in de drie onderstaande sequencediagrammen.
 
