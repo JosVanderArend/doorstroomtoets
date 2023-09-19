@@ -1,7 +1,7 @@
 # Doorstroomtoets
 API-definities voor Logistieke proces rondom de Doorstroomtoets in het PO bij afsprakenset "Logistiek Proces Doorstroomtoets po"
-De OAS3-definities (Defs) in YAML-bestand "doorstroomtoets-openapi.yaml" in de folder "swagger" zijn bedoeld voor de REST API t.b.v. Logisieke proces rondom de Doorstroomtoets PO (voor schooljaar 2023-2024), zie hiervoor de documentatie (https://app.swaggerhub.com/apis-docs/Kennisnet/Doorstroomtoets/1.0.1#) en het YAML-bestand (https://raw.githubusercontent.com/JosVanderArend/doorstroomtoets/main/swagger/doorstroom-openapi.yaml).
-
+De OAS3-definities (Defs) in YAML-bestand "doorstroomtoets-openapi.yaml" in de folder "swagger" zijn bedoeld voor de REST API t.b.v. Logisieke proces rondom de Doorstroomtoets PO (voor schooljaar 2023-2024), zie hiervoor de documentatie (https://app.swaggerhub.com/apis-docs/Kennisnet/Doorstroomtoets/1.0.1#) en het YAML-bestand (https://raw.githubusercontent.com/edustandaard/doorstroomtoets/main/swagger/doorstroom-openapi.yaml). 
+ 
 Deze uitwisseling omvat 3 interacties die schematisch worden gepresenteerd in de drie onderstaande sequencediagrammen.
 
 ```mermaid
@@ -39,11 +39,7 @@ sequenceDiagram
 
 De meest recente versie is 1.0.1 waarbij de naamswijziging van Calamiteitentoets naar OCW Doorstroomtoets is doorgevoerd samen met correcties conform de specs als: maximum lengte van voorletters van leerling is 6, attribuut versie binnen Doorstroomtoets is optioneel, attribuut toetsdefinitie verwijst naar enumeratie Toetssoort_enum en attributen met datumtijd zijn nu expliciet gedefinieerd als ISO 6801 date and time. Verder zijn enkele voorbeeldwaarden gecorrigeerd.
 
-Iedere publicatie van dit YAML-bestand voor de doorstroomtoetsketen is een getagde versie en is beschikbaar onder releases: https://github.com/JosVanderArend/doorstroomtoets/releases. Daar zijn tevens hulpmiddelen beschikbaar om getagde versies te vergelijken. 
+Iedere publicatie van dit YAML-bestand voor de doorstroomtoetsketen is een getagde versie en is beschikbaar onder releases: https://github.com/edustandaard/doorstroomtoets/releases. Daar zijn tevens hulpmiddelen beschikbaar om getagde versies te vergelijken. 
 Er kan maximaal worden teruggekeken naar en vergeleken met de eerste versie 1.0 (voor schooljaar 2023-2024).
 
-Indien er problemen of verbetersuggesties zijn specifiek over de YAML dan graag indienen onder issues: https://github.com/JosVanderArend/doorstroomtoets/issues.
-
-
-De actuele versie van deze OAS3-definities kan met de Swagger Editor worden ingezien via deze link: https://raw.githubusercontent.com/JosVanderArend/doorstroomtoets/main/swagger/doorstroom-openapi.yaml. 
- 
+Indien er problemen of verbetersuggesties zijn specifiek over de YAML dan graag indienen onder issues: https://github.com/edustandaard/doorstroomtoets/issues.
