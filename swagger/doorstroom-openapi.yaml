@@ -10,12 +10,8 @@ info:
     email: J.vanderArend@kennisnet.nl
   version: 1.1.0
 servers:
-  # Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/edustandaard/Doorstroomtoets/1.1.0
   - url: https://virtserver.swaggerhub.com/Kennisnet/Doorstroomtoets/1.1.0
     description: SwaggerHub API Auto Mocking
-  - url: https://doorstroomtoets.edustandaard.nl/v1.1
 tags:
   - name: Toetsdeelnemers
     description: API-definities voor de uitwisseling van de doorstroomtoetsdeelnemers en voorlopig schooladviezen
